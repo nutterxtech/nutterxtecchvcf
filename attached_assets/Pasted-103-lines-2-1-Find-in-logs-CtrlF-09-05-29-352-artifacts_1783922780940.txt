@@ -1,0 +1,77 @@
+103 lines
+
+2
+
+1
+Find in logs
+CtrlF
+09:05:29.352 
+artifacts/mockup-sandbox build: rendering chunks...
+09:05:29.360 
+artifacts/mockup-sandbox build: computing gzip size...
+09:05:29.371 
+artifacts/mockup-sandbox build: dist/index.html                   4.42 kB │ gzip:  1.23 kB
+09:05:29.372 
+artifacts/mockup-sandbox build: dist/assets/index-D3zZPnxY.css   88.21 kB │ gzip: 14.76 kB
+09:05:29.373 
+artifacts/mockup-sandbox build: dist/assets/index-D4Ieq8L0.js   187.72 kB │ gzip: 59.51 kB
+09:05:29.374 
+artifacts/mockup-sandbox build: ✓ built in 1.44s
+09:05:29.409 
+artifacts/mockup-sandbox build: Done
+09:05:29.411 
+artifacts/api-server build$ node ./build.mjs
+09:05:30.209 
+artifacts/api-server build:   dist/index.mjs                       4.3mb ⚠️
+09:05:30.211 
+artifacts/api-server build:   dist/pino-worker.mjs               153.4kb
+09:05:30.212 
+artifacts/api-server build:   dist/pino-file.mjs                 142.0kb
+09:05:30.212 
+artifacts/api-server build:   dist/pino-pretty.mjs               114.6kb
+09:05:30.212 
+artifacts/api-server build:   dist/thread-stream-worker.mjs        7.3kb
+09:05:30.212 
+artifacts/api-server build:   dist/index.mjs.map                   7.7mb
+09:05:30.212 
+artifacts/api-server build:   dist/pino-worker.mjs.map           256.9kb
+09:05:30.212 
+artifacts/api-server build:   dist/pino-file.mjs.map             229.0kb
+09:05:30.213 
+artifacts/api-server build:   dist/pino-pretty.mjs.map           204.0kb
+09:05:30.213 
+artifacts/api-server build:   dist/thread-stream-worker.mjs.map   12.0kb
+09:05:30.213 
+artifacts/api-server build: ⚡ Done in 730ms
+09:05:30.223 
+artifacts/api-server build: Done
+09:05:30.224 
+artifacts/vcf-registration build$ vite build --config vite.config.ts
+09:05:30.461 
+artifacts/vcf-registration build: vite v7.3.6 building client environment for production...
+09:05:30.527 
+artifacts/vcf-registration build: transforming...
+09:05:31.068 
+artifacts/vcf-registration build: src/components/ui/tooltip.tsx (2:0): Error when using sourcemap for reporting an error: Can't resolve original location of error.
+09:05:32.744 
+artifacts/vcf-registration build: src/components/ui/label.tsx (2:0): Error when using sourcemap for reporting an error: Can't resolve original location of error.
+09:05:34.150 
+artifacts/vcf-registration build: ✓ 2098 modules transformed.
+09:05:34.466 
+artifacts/vcf-registration build: rendering chunks...
+09:05:34.476 
+artifacts/vcf-registration build: computing gzip size...
+09:05:34.495 
+artifacts/vcf-registration build: dist/public/index.html                   1.56 kB │ gzip:   0.58 kB
+09:05:34.500 
+artifacts/vcf-registration build: dist/public/assets/index-BhSovRaS.css  100.14 kB │ gzip:  16.77 kB
+09:05:34.500 
+artifacts/vcf-registration build: dist/public/assets/index-DPbqoxa2.js   475.04 kB │ gzip: 146.48 kB
+09:05:34.501 
+artifacts/vcf-registration build: ✓ built in 4.02s
+09:05:34.546 
+artifacts/vcf-registration build: Done
+09:05:34.588 
+Error: No Output Directory named "public" found after the Build completed. Configure the Output Directory in your Project Settings. Alternatively, configure vercel.json#outputDirectory.
+09:05:34.589 
+Learn More: https://vercel.link/missing-public-directo

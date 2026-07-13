@@ -67,15 +67,15 @@ From the admin dashboard's **Registrations** tab:
 Use Replit's **Publish** action once you're happy with the app in preview — it builds and serves both the API and frontend workflows in production.
 
 ### On Vercel
-This app is also configured to deploy as a single Vercel project (frontend + API in one deployment):
+This app is also configured to deploy as a single Vercel project (frontend + API in one deployment), directly from the monorepo root — **do not** override the Root Directory in Vercel's project settings; leave it at the repo root.
 
 1. Push this repository to GitHub and import it into Vercel.
-2. In the Vercel project settings, set **Root Directory** to `artifacts/vcf-registration`.
+2. Leave the Vercel **Root Directory** setting at its default (repo root). The repo-root `vercel.json` handles routing everything to the right place.
 3. Add these environment variables in the Vercel dashboard (Project → Settings → Environment Variables): `MONGODB_URI`, `ADMIN_USERNAME`, `ADMIN_PASSWORD`, `SESSION_SECRET`.
-4. Deploy. Vercel picks up `vercel.json` in that folder, which:
-   - Builds the Vite frontend as static assets (`pnpm --filter @workspace/vcf-registration run build`).
-   - Deploys `api/index.ts` as a serverless function that wraps the same Express app used on Replit, so registration, admin, and VCF download endpoints all work identically at `/api/*`.
-   - Rewrites everything else to `index.html` so client-side routing (including the `?admin=true` admin entry point) works on refresh/direct links.
+4. Deploy. Vercel runs the monorepo's default build (`pnpm run build`, which builds every workspace package), and the repo-root `vercel.json`:
+   - Points `outputDirectory` at `artifacts/vcf-registration/dist/public` (the Vite build output).
+   - Deploys `artifacts/vcf-registration/api/index.ts` as a serverless function that wraps the same Express app used on Replit, so registration, admin, and VCF download endpoints all work identically.
+   - Rewrites `/api/*` to that function and everything else to `index.html`, so client-side routing (including the `?admin=true` admin entry point) works on refresh/direct links.
 
 No code changes are needed between the two targets — the same Express app and React frontend run on both.
 
