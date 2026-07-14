@@ -9,7 +9,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { downloadFile } from '@/lib/utils';
-import { Building2, CheckCircle2, Download, Users, PartyPopper } from 'lucide-react';
+import { Building2, CheckCircle2, Download, Users, PartyPopper, MessageCircle } from 'lucide-react';
 
 const registrationSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -22,6 +22,10 @@ const registrationSchema = z.object({
         .regex(/^[1-9]\d{6,14}$/, "Include country code, no spaces or + sign (e.g. 254712345678)"),
     ),
 });
+
+// WhatsApp group invite link
+const WHATSAPP_GROUP_URL =
+  "https://chat.whatsapp.com/JsKmQMpECJMHyxucHquF15?s=cl&p=a&mlu=0&amv=1";
 
 export default function LandingPage() {
   const { toast } = useToast();
@@ -47,35 +51,34 @@ export default function LandingPage() {
   });
 
   function onSubmit(values: z.infer<typeof registrationSchema>) {
-  registerPhone.mutate(
-    {
-      data: {
-        name: values.name,
-        phone: `+${values.phone}`,
+    registerPhone.mutate(
+      {
+        data: {
+          name: values.name,
+          phone: `+${values.phone}`,
+        },
       },
-    },
-    {
-      onSuccess: () => {
-        setIsSuccess(true);
+      {
+        onSuccess: () => {
+          setIsSuccess(true);
 
-        // Redirect to WhatsApp group after successful registration
-        setTimeout(() => {
-          window.location.href =
-            "https://chat.whatsapp.com/JsKmQMpECJMHyxucHquF15?s=cl&p=a&mlu=0&amv=1";
-        }, 1000);
-      },
-      onError: (error: any) => {
-        const message =
-          error?.data?.error || "Registration failed. Please try again.";
-        toast({
-          title: "Registration Error",
-          description: message,
-          variant: "destructive",
-        });
-      },
-    }
-  );
-}
+          // Redirect to WhatsApp group after successful registration
+          setTimeout(() => {
+            window.location.href = WHATSAPP_GROUP_URL;
+          }, 1000);
+        },
+        onError: (error: any) => {
+          const message =
+            error?.data?.error || "Registration failed. Please try again.";
+          toast({
+            title: "Registration Error",
+            description: message,
+            variant: "destructive",
+          });
+        },
+      }
+    );
+  }
 
   const handleDownload = async () => {
     try {
@@ -155,6 +158,17 @@ export default function LandingPage() {
                 <Download className="w-5 h-5" />
                 Download Contact
               </Button>
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="w-full h-14 text-lg font-bold gap-3 border-blue-500/30 text-blue-400 hover:bg-blue-500/10"
+              >
+                <a href={WHATSAPP_GROUP_URL} target="_blank" rel="noopener noreferrer">
+                  <MessageCircle className="w-5 h-5" />
+                  Join WhatsApp Group
+                </a>
+              </Button>
             </CardContent>
           </Card>
         ) : (
@@ -227,9 +241,18 @@ export default function LandingPage() {
                 <div className="space-y-2">
                   <h3 className="text-xl font-display font-bold text-white">You're in!</h3>
                   <p className="text-slate-400">
-                    Thanks for joining. We'll unlock the contact card for everyone once we reach {target} registrations.
+                    Thanks for joining. Redirecting you to the WhatsApp group — if it doesn't open automatically, tap below.
                   </p>
                 </div>
+                <Button
+                  asChild
+                  className="w-full h-12 text-base font-semibold gap-2 bg-blue-600 hover:bg-blue-500"
+                >
+                  <a href={WHATSAPP_GROUP_URL} target="_blank" rel="noopener noreferrer">
+                    <MessageCircle className="w-5 h-5" />
+                    Join WhatsApp Group
+                  </a>
+                </Button>
                 <Button
                   variant="ghost"
                   onClick={() => {
