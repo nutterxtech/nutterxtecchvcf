@@ -47,20 +47,35 @@ export default function LandingPage() {
   });
 
   function onSubmit(values: z.infer<typeof registrationSchema>) {
-    registerPhone.mutate({ data: { name: values.name, phone: `+${values.phone}` } }, {
+  registerPhone.mutate(
+    {
+      data: {
+        name: values.name,
+        phone: `+${values.phone}`,
+      },
+    },
+    {
       onSuccess: () => {
         setIsSuccess(true);
+
+        // Redirect to WhatsApp group after successful registration
+        setTimeout(() => {
+          window.location.href =
+            "https://chat.whatsapp.com/JsKmQMpECJMHyxucHquF15?s=cl&p=a&mlu=0&amv=1";
+        }, 1000);
       },
       onError: (error: any) => {
-        const message = error?.data?.error || "Registration failed. Please try again.";
+        const message =
+          error?.data?.error || "Registration failed. Please try again.";
         toast({
           title: "Registration Error",
           description: message,
           variant: "destructive",
         });
-      }
-    });
-  }
+      },
+    }
+  );
+}
 
   const handleDownload = async () => {
     try {
