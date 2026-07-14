@@ -22,5 +22,12 @@ export default async function handler(
   res: ServerResponse,
 ) {
   await connectMongo();
-  app(req, res);
+  // Express apps are callable request handlers at runtime
+  // ((req, res[, next]) => void), but depending on which @types/express
+  // version gets resolved, the `Express`/`Application` type doesn't always
+  // expose that call signature. Cast rather than depend on it.
+  (app as unknown as (req: IncomingMessage, res: ServerResponse) => void)(
+    req,
+    res,
+  );
 }
