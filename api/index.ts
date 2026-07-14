@@ -18,15 +18,32 @@
 // resolution for TypeScript functions, which rejects them. Importing the
 // already-bundled plain-JS output sidesteps that entirely.
 //
+// The import is also *dynamic* (`await import(...)`), not static. Vercel
+// transpiles this function to CommonJS by default (there's no root-level
+// "type": "module" in package.json), which turns a static `import` into a
+// `require()` — but `dist/serverless.mjs` is genuine ESM and can't be
+// required. A dynamic import is preserved as-is and works from CommonJS.
+//
 // `vercel.json` rewrites `/api/:path*` to this function, and mongoose's
 // connection is cached across warm invocations (see connectMongo).
 import type { IncomingMessage, ServerResponse } from "http";
-import { app, connectMongo } from "../artifacts/api-server/dist/serverless.mjs";
+
+type ServerlessModule = typeof import("../artifacts/api-server/dist/serverless.mjs");
+
+let modulePromise: Promise<ServerlessModule> | null = null;
+
+function loadModule(): Promise<ServerlessModule> {
+  if (!modulePromise) {
+    modulePromise = import("../artifacts/api-server/dist/serverless.mjs");
+  }
+  return modulePromise;
+}
 
 export default async function handler(
   req: IncomingMessage,
   res: ServerResponse,
 ) {
+  const { app, connectMongo } = await loadModule();
   await connectMongo();
   app(req, res);
 }
